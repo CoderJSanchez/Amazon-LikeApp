@@ -23,22 +23,29 @@ connection.connect( function(err){
         for(var i = 0; i < res.length; i++){
          console.log("ID: " + res[i].id + "   " + "Product: " + res[i].product_name + "   " + "Price: " + "$" + res[i].price + '\n');
         }
-        inquirer.prompt({
+        inquirer.prompt([
+            {
             type: "input",
             message: "Please select an item by ID number.",
             name: "productID"
-        }).then(function(reply){
+            },
+            {
+            type: "input",
+            message: "How many?",
+            name: "number"
+            }
+        ]).then(function(reply){
             for(var i = 0; i < res.length; i++){
                 if(parseInt(reply.productID) === res[i].id){
-                console.log(res[i].product_name + ' ' + res[i].price);
+                console.log("[Shopping Cart]: " + res[i].product_name + ' ' + "$" + res[i].price);
                 }
-            }
-              
-            
-        })
-
-        connection.end();
+            }     
+        });
     });
+    endConnection();
   }
   
 
+function endConnection(){
+    connection.end();
+}
