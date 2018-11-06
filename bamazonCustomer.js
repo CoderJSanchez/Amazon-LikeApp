@@ -16,15 +16,29 @@ connection.connect( function(err){
 
 
   function startApp(){
-    connection.query("SELECT id, product_name, price FROM products ",function(err, res){
-        for(var i = 0; i < res.length; i++){
-            console.log("ID: " + res[i].id + "   " + "Product: " + res[i].product_name + "   " + "Price: " + "$" + res[i].price + '\n');
-            console.log("----------------------------------------------------------");
+      connection.query("SELECT * FROM products", function(err, res){
+        if(err){
+            console.log(err);
         }
+        for(var i = 0; i < res.length; i++){
+         console.log("ID: " + res[i].id + "   " + "Product: " + res[i].product_name + "   " + "Price: " + "$" + res[i].price + '\n');
+        }
+        inquirer.prompt({
+            type: "input",
+            message: "Please select an item by ID number.",
+            name: "productID"
+        }).then(function(reply){
+            for(var i = 0; i < res.length; i++){
+                if(parseInt(reply.productID) === res[i].id){
+                console.log(res[i].product_name + ' ' + res[i].price);
+                }
+            }
+              
+            
+        })
+
+        connection.end();
     });
-    connection.end();
-};
-
-
-
+  }
+  
 
