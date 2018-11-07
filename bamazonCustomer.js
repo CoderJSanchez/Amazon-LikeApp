@@ -38,12 +38,26 @@ connection.connect( function(err){
             for(var i = 0; i < res.length; i++){
                 if(parseInt(reply.productID) === res[i].id){
                 console.log("[Shopping Cart]: " + res[i].product_name + ' ' + "$" + res[i].price);
+                
+                if(parseInt(reply.number) < res[i].stock_quantity){
+                    console.log("we have enough");
+                }else{
+                    console.log("not enough");
                 }
-            }     
+
+                console.log("reply.number: " + reply.number);
+                console.log("res.stock: " + res[i].stock_quantity);
+                console.log("res: " + JSON.stringify(res[i]));
+                }
+            }
+            
+            
+            
         });
     });
     endConnection();
   }
+
   
 
 function endConnection(){
