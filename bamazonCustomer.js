@@ -21,6 +21,7 @@ connection.connect( function(err){
             console.log(err);
         }
         for(var i = 0; i < res.length; i++){
+        
          console.log("ID: " + res[i].id + "   " + "Product: " + res[i].product_name + "   " + "Price: " + "$" + res[i].price + '\n');
         }
         inquirer.prompt([
@@ -39,27 +40,45 @@ connection.connect( function(err){
                 if(parseInt(reply.productID) === res[i].id){
                 console.log("[Shopping Cart]: " + res[i].product_name + ' ' + "$" + res[i].price);
                 
-                if(parseInt(reply.number) < res[i].stock_quantity){
-                    console.log("we have enough");
-                }else{
-                    console.log("not enough");
-                }
+                  if(parseInt(reply.number) < res[i].stock_quantity){
+                   
+                    var total = reply.number * res[i].price;
+                    console.log("*************************")
+                    console.log("QUANTITIY IN STOCK");
+                    console.log("*************************")
+                    console.log("*****************************")
+                    console.log("SALE TOTAL: " + "$" + total);
+                    console.log("*****************************")
+                    connection.query(
+                        'UPDATE products SET ? WHERE ?',
+                        [
+                            {
+                              stock_quantity: res[i].stock_quantity - reply.number
+                            },
+                            {
+                                id: reply.productID
+                            }
+                        ],
+                        function(err){
+                            if(err) throw err;
+                            console.log("database updated");
+                        }
+                        );
+                        endConnection();
+                    
+                  }else{
+                    console.log("*********************************")
+                    console.log("INSUFFICIENT QUANTITIY IN STOCK");
+                    console.log("*********************************")
+                    startApp();
+                 }
 
-                console.log("reply.number: " + reply.number);
-                console.log("res.stock: " + res[i].stock_quantity);
-                console.log("res: " + JSON.stringify(res[i]));
                 }
-            }
-            
-            
-            
+            }       
         });
     });
-    endConnection();
   }
-
   
-
 function endConnection(){
     connection.end();
 }
