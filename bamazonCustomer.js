@@ -38,7 +38,7 @@ connection.connect( function(err){
         ]).then(function(reply){
             for(var i = 0; i < res.length; i++){
                 if(parseInt(reply.productID) === res[i].id){
-                console.log("[Shopping Cart]: " + res[i].product_name + ' ' + "$" + res[i].price);
+                console.log("[Shcopping Cart]: " + res[i].product_name + ' ' + "$" + res[i].price);
                 
                   if(parseInt(reply.number) < res[i].stock_quantity){
                    
@@ -78,7 +78,7 @@ connection.connect( function(err){
         });
     });
   }
-  
+
 function endConnection(){
     connection.end();
 }
